@@ -6,8 +6,8 @@ class Book extends Component {
         return (
             <div className="book">
                 <BookTop coverStyle={ this.props.coverStyle} />
-                <div className="book-title">The Hobbit</div>
-                <div className="book-authors">J.R.R. Tolkien</div>
+                <div className="book-title">{ this.props.bookTitle }</div>
+                <div className="book-authors">{ this.props.bookAuthor }</div>
             </div>
         )
     }
