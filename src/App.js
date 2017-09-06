@@ -128,7 +128,7 @@ class BooksApp extends React.Component {
                           <Book 
                             coverStyle={{width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}
                             bookTitle={book.title}
-                            bookAuthor={book.authors[0]} 
+                            bookAuthors={book.authors} 
                           />
                         </li>
                       ))}
