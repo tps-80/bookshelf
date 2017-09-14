@@ -1,7 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import Select from './Select'
 import Book from './Book'
 
 class BooksApp extends React.Component {
@@ -12,12 +13,17 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    showSearchPage: false,
     books: []
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
+      this.setState( { books })
+    })
+  }
+
+  updateShelf = (book, newShelf) => {
+    BooksAPI.update(book, newShelf).then((books) => {
       this.setState( { books })
     })
   }
@@ -29,7 +35,7 @@ class BooksApp extends React.Component {
 
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
+        <Route exact path="/search" render={() => (
           <div className="search-books">
             <div className="search-books-bar">
               <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
@@ -50,7 +56,8 @@ class BooksApp extends React.Component {
               <ol className="books-grid"></ol>
             </div>
           </div>
-        ) : (
+          )}/>
+        <Route exact path="/" render={() => (
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
@@ -65,8 +72,8 @@ class BooksApp extends React.Component {
                         <li key={book.id} >
                           <Book 
                             coverStyle={{width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}
-                            bookTitle={book.title}
-                            bookAuthors={book.authors} 
+                            onUpdateShelf={this.updateShelf} 
+                            book={book}
                           />
                         </li>
                       ))}
@@ -81,8 +88,8 @@ class BooksApp extends React.Component {
                         <li key={book.id} >
                           <Book 
                             coverStyle={{width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}
-                            bookTitle={book.title}
-                            bookAuthors={book.authors} 
+                            onUpdateShelf={this.updateShelf} 
+                            book={book}
                           />
                         </li>
                       ))}
@@ -97,8 +104,8 @@ class BooksApp extends React.Component {
                         <li key={book.id} >
                           <Book 
                             coverStyle={{width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}
-                            bookTitle={book.title}
-                            bookAuthors={book.authors} 
+                            onUpdateShelf={this.updateShelf} 
+                            book={book}
                           />
                         </li>
                       ))}
@@ -108,10 +115,10 @@ class BooksApp extends React.Component {
               </div>
             </div>
             <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
+              <Link to="/search">Add a book</Link>
             </div>
           </div>
-        )}
+          )}/>
       </div>
     )
   }

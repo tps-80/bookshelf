@@ -7,7 +7,10 @@ class BookTop extends Component {
             <div className="book-top">
                 <div className="book-cover" style={ this.props.coverStyle }></div>
                 <div className="book-shelf-changer">
-                    <Select />
+                    <Select  
+                        onUpdateShelf={ this.props.onUpdateShelf } 
+                        book={ this.props.book }
+                    />
                 </div>
             </div>
         ) 
