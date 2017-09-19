@@ -17,16 +17,13 @@ class BooksApp extends React.Component {
   }
 
   updateShelf = (book, newShelf) => {
-    BooksAPI.update(book, newShelf).then((books) => {
+    BooksAPI.update(book, newShelf).then(
+      BooksAPI.getAll().then((books) => {
       this.setState( { books })
-    })
+    }))
   }
 
   render() {
-
-
-    console.log(this.state.books);
-
     return (
       <div className="app">
         <Route exact path="/search" render={() => (
