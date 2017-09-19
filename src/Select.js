@@ -4,20 +4,13 @@ class Select extends Component {
     constructor(props) {
         super(props);
         this.state = {value: 'coconut'};
-
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(event) {
         this.setState({value: event.target.value});
         alert('Shelf you selected is: ' + event.target.value);
-        this.this.props.onUpdateShelf(this.props.book, event.target.value)
-    }
-
-    handleSubmit(event) {
-        alert('Shelf you selected is: ' + this.state.value);
-        event.preventDefault();
+        this.props.onUpdateShelf(this.props.book, event.target.value)
     }
 
     render() {
