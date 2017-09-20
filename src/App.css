@@ -130,9 +130,14 @@ body, .app {
   margin-top: 10px;
 }
 .book-authors {
+  text-align: center;
   color: #999;
 }
+li.book-authors {
+  padding: 5px;
+}
 .book-author-list {
+  padding-left: 0;
   list-style-type: none;
 }
 

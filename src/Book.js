@@ -13,10 +13,10 @@ class Book extends Component {
                     book={ this.props.book }
                 />
                 <div className="book-title">{ this.props.book.title }</div>
+                <div  className="book-authors">Author:</div>
                 <ol className="book-author-list">
-                    <div  className="book-authors">Author:</div>
                     {this.authors.map((author) => (
-                        <li key="author" className="book-authors">
+                        <li key={author} className="book-authors">
                            <div className="book-authors">{author}</div>
                         </li>
                     ))}
