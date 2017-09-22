@@ -7,7 +7,8 @@ import Book from './Book'
 
 class BooksApp extends React.Component {
   state = {
-    books: []
+    books: [],
+    searchedBooks: []
   }
 
   componentDidMount() {
@@ -23,7 +24,16 @@ class BooksApp extends React.Component {
     }))
   }
 
+  onSearch = (query) => { 
+    console.log("onSearch")
+    BooksAPI.search("Art", 10).then(
+      (searchedBooks) => { this.setState({searchedBooks})
+    })
+  }
   render() {
+ 
+  this.onSearch();
+
     return (
       <div className="app">
         <Route exact path="/search" render={() => (
@@ -44,14 +54,23 @@ class BooksApp extends React.Component {
               </div>
             </div>
             <div className="search-books-results">
-              <ol className="books-grid"></ol>
+              <ol className="books-grid">
+                {this.state.searchedBooks.map((book) => (
+                  <li key={book.id} >
+                    <Book 
+                      coverStyle={{width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}
+                      onUpdateShelf={this.updateShelf} 
+                      book={book}
+                    />
+                  </li>
+                ))}</ol>
             </div>
           </div>
           )}/>
         <Route exact path="/" render={() => (
           <div className="list-books">
             <div className="list-books-title">
-              <h1>MyReads</h1>
+              <h1 onClick={this.onSearch} >MyReads</h1>
             </div>
             <div className="list-books-content">
               <div>
