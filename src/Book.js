@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import BookTop from './BookTop'
 
 class Book extends Component {
-    authors = this.props.book.authors
+    authors = this.props.book.authors || []
 
     render() {
         return (

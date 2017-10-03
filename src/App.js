@@ -8,32 +8,39 @@ import Book from './Book'
 class BooksApp extends React.Component {
   state = {
     books: [],
-    searchedBooks: []
+    searchedBooks: [],
+    placeholder : "http://placehold.it/183X192"
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      this.setState( { books })
+      this.setState( { books: books })
     })
   }
 
   updateShelf = (book, newShelf) => {
     BooksAPI.update(book, newShelf).then(
       BooksAPI.getAll().then((books) => {
-      this.setState( { books })
+      this.setState( { books: books })
     }))
   }
 
   onSearch = (query) => { 
-    console.log("onSearch")
-    BooksAPI.search("Art", 10).then(
-      (searchedBooks) => { this.setState({searchedBooks})
-    })
+    console.log("query is", query)
+    BooksAPI.search(query, 10).then(
+      (searchedBooks) => {
+        console.log('searchedBooks', searchedBooks);
+        if ( searchedBooks['error'] ) {
+          this.setState({searchedBooks: []});
+        } else {
+          this.setState({searchedBooks: searchedBooks})
+        }
+      }
+    )
   }
-  render() {
- 
-  this.onSearch();
 
+  render() {
+  
     return (
       <div className="app">
         <Route exact path="/search" render={() => (
@@ -41,16 +48,11 @@ class BooksApp extends React.Component {
             <div className="search-books-bar">
               <Link className="close-search" to="/">Close</Link>
               <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" placeholder="Search by title or author"/>
-
+                <input 
+                  type="text" 
+                  placeholder="Search by title or author" 
+                  onKeyUp={(event) => this.onSearch(event.target.value)}
+                  />
               </div>
             </div>
             <div className="search-books-results">
@@ -58,7 +60,8 @@ class BooksApp extends React.Component {
                 {this.state.searchedBooks.map((book) => (
                   <li key={book.id} >
                     <Book 
-                      coverStyle={{width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}
+                      coverStyle={book.imageLinks.thumbnail ?
+                      {width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`} : {width: 128, height: 192, backgroundImage: `url(${this.state.placeholder})`}}
                       onUpdateShelf={this.updateShelf} 
                       book={book}
                     />
@@ -70,7 +73,7 @@ class BooksApp extends React.Component {
         <Route exact path="/" render={() => (
           <div className="list-books">
             <div className="list-books-title">
-              <h1 onClick={this.onSearch} >MyReads</h1>
+              <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
               <div>
