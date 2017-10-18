@@ -15,26 +15,21 @@ class BooksApp extends React.Component {
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState( { books: books })
-    })
+    });
   }
 
   updateShelf = (book, newShelf) => {
-    BooksAPI.update(book, newShelf).then(
-      BooksAPI.getAll().then((books) => {
-      this.setState( { books: books })
-    }))
+    BooksAPI.update(book, newShelf).then((books) => { 
+      book.shelf = newShelf;
+      this.setState( { books: this.state.books.filter((b) => b.id !== book.id).concat(book)});
+    });
   }
 
   onSearch = (query) => { 
     BooksAPI.search(query, 10).then(
       (searchedBooks) => {
-        if ( searchedBooks['error'] ) {
-          this.setState({searchedBooks: []});
-        } else {
           this.setState({searchedBooks: searchedBooks})
-        }
-      }
-    )
+      }).catch((e) => {this.setState({searchedBooks: []})});
   }
 
   render() {
