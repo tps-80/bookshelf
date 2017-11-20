@@ -26,10 +26,23 @@ class BooksApp extends React.Component {
   }
 
   onSearch = (query) => { 
-    if(query) {
+    if(query) {  //in case query is empty
       BooksAPI.search(query, 10).then(
         (searchedBooks) => {
+          if ( searchedBooks['error'] ) {
+              this.setState({searchedBooks: []});
+          } else {
+            searchedBooks.map((book) => {
+              let bookOnShelf = this.state.books.find((b) => b.id === book.id);
+              if (bookOnShelf) {
+                book.shelf = bookOnShelf.shelf;
+              } else {  
+                book.shelf = 'none';
+              }
+              return book;
+            })
             this.setState({searchedBooks: searchedBooks})
+          }
         }).catch((e) => {this.setState({searchedBooks: []})});
     }
   }
