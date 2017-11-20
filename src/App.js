@@ -29,20 +29,20 @@ class BooksApp extends React.Component {
     if(query) {  //in case query is empty
       BooksAPI.search(query, 10).then(
         (searchedBooks) => {
-          if ( searchedBooks['error'] ) {
-              this.setState({searchedBooks: []});
-          } else {
-            searchedBooks.map((book) => {
-              let bookOnShelf = this.state.books.find((b) => b.id === book.id);
-              if (bookOnShelf) {
-                book.shelf = bookOnShelf.shelf;
-              } else {  
-                book.shelf = 'none';
-              }
-              return book;
-            })
-            this.setState({searchedBooks: searchedBooks})
-          }
+        if ( searchedBooks['error'] ) {
+            this.setState({searchedBooks: []});
+        } else {
+          searchedBooks.map((book) => {
+            let bookOnShelf = this.state.books.find((b) => b.id === book.id);
+            if (bookOnShelf) {
+              book.shelf = bookOnShelf.shelf;
+            } else {
+              book.shelf = 'none';
+            }
+            return book;
+          })
+          this.setState({searchedBooks: searchedBooks})
+        }
         }).catch((e) => {this.setState({searchedBooks: []})});
     }
   }
@@ -69,7 +69,7 @@ class BooksApp extends React.Component {
                   <li key={book.id} >
                     <Book 
                       coverStyle={book.imageLinks.thumbnail ?
-                      {width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`} : {width: 128, height: 192, backgroundImage: `url(${this.state.placeholder})`}}
+                      {backgroundImage: `url(${book.imageLinks.thumbnail})`} : {backgroundImage: `url(${this.state.placeholder})`}}
                       onUpdateShelf={this.updateShelf} 
                       book={book}
                     />
@@ -92,7 +92,8 @@ class BooksApp extends React.Component {
                       {this.state.books.filter((book) => book.shelf === "currentlyReading").map((book) => (
                         <li key={book.id} >
                           <Book 
-                            coverStyle={{width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}
+                            coverStyle={book.imageLinks.thumbnail ?
+                            {backgroundImage: `url(${book.imageLinks.thumbnail})`} : {backgroundImage: `url(${this.state.placeholder})`}}
                             onUpdateShelf={this.updateShelf} 
                             book={book}
                           />
@@ -108,7 +109,8 @@ class BooksApp extends React.Component {
                       {this.state.books.filter((book) => book.shelf === "wantToRead").map((book) => (
                         <li key={book.id} >
                           <Book 
-                            coverStyle={{width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}
+                            coverStyle={book.imageLinks.thumbnail ?
+                            {backgroundImage: `url(${book.imageLinks.thumbnail})`} : {backgroundImage: `url(${this.state.placeholder})`}}
                             onUpdateShelf={this.updateShelf} 
                             book={book}
                           />
@@ -124,7 +126,8 @@ class BooksApp extends React.Component {
                       {this.state.books.filter((book) => book.shelf === "read").map((book) => (
                         <li key={book.id} >
                           <Book 
-                            coverStyle={{width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})`}}
+                            coverStyle={book.imageLinks.thumbnail ?
+                            {backgroundImage: `url(${book.imageLinks.thumbnail})`} : {backgroundImage: `url(${this.state.placeholder})`}}
                             onUpdateShelf={this.updateShelf} 
                             book={book}
                           />
