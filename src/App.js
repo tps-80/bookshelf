@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Book from './Book'
+import Shelf from './Shelf'
 
 class BooksApp extends React.Component {
   state = {
@@ -85,57 +86,11 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {this.state.books.filter((book) => book.shelf === "currentlyReading").map((book) => (
-                        <li key={book.id} >
-                          <Book 
-                            coverStyle={book.imageLinks.thumbnail ?
-                            {backgroundImage: `url(${book.imageLinks.thumbnail})`} : {backgroundImage: `url(${this.state.placeholder})`}}
-                            onUpdateShelf={this.updateShelf} 
-                            book={book}
-                          />
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {this.state.books.filter((book) => book.shelf === "wantToRead").map((book) => (
-                        <li key={book.id} >
-                          <Book 
-                            coverStyle={book.imageLinks.thumbnail ?
-                            {backgroundImage: `url(${book.imageLinks.thumbnail})`} : {backgroundImage: `url(${this.state.placeholder})`}}
-                            onUpdateShelf={this.updateShelf} 
-                            book={book}
-                          />
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {this.state.books.filter((book) => book.shelf === "read").map((book) => (
-                        <li key={book.id} >
-                          <Book 
-                            coverStyle={book.imageLinks.thumbnail ?
-                            {backgroundImage: `url(${book.imageLinks.thumbnail})`} : {backgroundImage: `url(${this.state.placeholder})`}}
-                            onUpdateShelf={this.updateShelf} 
-                            book={book}
-                          />
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                </div>
+                <Shelf shelfName={{text:"Currently Reading", name:"currentlyReading"}} books={this.state.books} onUpdateShelf={this.updateShelf} />
+
+                <Shelf shelfName={{text:"Want to Read", name:"wantToRead"}} books={this.state.books} onUpdateShelf={this.updateShelf} />
+
+                <Shelf shelfName={{text:"Read", name:"read"}} books={this.state.books} onUpdateShelf={this.updateShelf}/>
               </div>
             </div>
             <div className="open-search">
